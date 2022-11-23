@@ -33,6 +33,9 @@ Caller time: 2337859 ms, Samples called: 69503229, samples/s: 29729.4
 Finishing up any open output files.
 Basecalling completed successfully.
 
+#Basecalling rate was ~39mins for basecalling 2x FAST5 files with a total of 64.7Mb in size. (1.6Mb/Min)# 
+
+#Next Check Barcode 2: 2 files 106.6Mb in size using 8 threads per caller. 
 
 #Running sample for Barcode 02
 ubuntu@nanopore-runs:~$ guppy_basecaller -i /home/ubuntu/Mk1b_mito_PCR/fast5_pass/barcode02 -s /home/ubuntu/NA10849 --flowcell FLO-FLG001 --kit SQK-LSK109 --num_callers 2 --cpu_threads_per_caller 8
