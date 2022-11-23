@@ -1,0 +1,12 @@
+This file is to give an overview of setting up an Instance (VM) for running sequencing analysis.
+
+1. Log in to your Nectar account
+2. Select "Instances" (Highlighted yellow section on left-hand side)
+3. Select "Launch Instance"
+4. Fill out the Details tab
+  Note: This must include a new Instance Name and Count
+5. Source details - click on the upward facing arrow to the right of the OS/Kernel that will be used for the VM
+  Note: I predominantly have been using the NeCTAR Ubuntu 20.04 (Focal) amd64 or NeCTAR Ubuntu 18.04 (Bionic) - make sure these are compatible with any downstream packages/applications
+6. Select "Flavour" - This provides information on how powerful the VM will be. For Nanopore sequencing applications I recommend a minimum of 8Gb RAM and 30Gb Root Disk space
+7. Select "Key Pair" - This is a generate authenticator that is highly recommended for running your VM. These can be generated using Putty or through the command line, or through Nectar
+8. Launch Instance
