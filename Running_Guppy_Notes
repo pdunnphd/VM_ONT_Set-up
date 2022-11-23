@@ -58,3 +58,8 @@ The EULA may be found in /opt/ont/guppy/bin
 Found 2 input read files to process.
 Init time: 712 ms
 
+Caller time: 4106560 ms, Samples called: 114125167, samples/s: 27790.9
+Finishing up any open output files.
+Basecalling completed successfully.
+
+#Basecalling rate was ~68mins for basecalling 2x FAST5 files with a total of 106.6Mb in size. (1.6Mb/Min)# 
