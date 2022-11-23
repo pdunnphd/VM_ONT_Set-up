@@ -26,3 +26,9 @@ The EULA may be found in /opt/ont/guppy/bin
 Found 2 input read files to process.
 Init time: 682 ms
 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+Caller time: 2337859 ms, Samples called: 69503229, samples/s: 29729.4
+Finishing up any open output files.
+Basecalling completed successfully.
