@@ -1,0 +1,25 @@
+#Creating a robust mitoseq pipeline for analysing novel nanopore mitoseq data - Using NA10849 as an example (This will be made into a shell script for automated analysis in the future). 
+
+#1.Generate sequence files using Guppy (Version 6.4.2+97a7f06)for basecalling from FAST5 files
+guppy_basecaller -i /home/ubuntu/Mk1b_mito_PCR/fast5_pass/barcode02 -s /home/ubuntu/NA10849 --flowcell FLO-FLG001 --kit SQK-LSK109 --num_callers 2 --cpu_threads_per_caller 4
+
+#2. mapping fastq file ONT using minimap2 (version 2.17-r941):
+minimap2 -a rCRS.fa /home/ubuntu/NA10849/pass/fastq_runid_4becf67eacf639b97ab11e14cb05bfc8b1186795_0_0.fastq > /home/ubuntu/NA10849/NA10849_PCR.sam
+
+#3. Run QC check using MinIONQC.R
+Rscript MinIONQC.R -i ./NA10849/sequencing_summary.txt -o ./NA10849/MinIONQC -p 2
+
+#SAM-BAM using samtools
+samtools view -S -b /home/ubuntu/NA10849/NA10849_PCR.sam  > /home/ubuntu/NA10849/NA10849_PCR.bam  
+
+#Samtools sort to sort aligned bam
+samtools sort //home/ubuntu/NA10849/NA10849_PCR.bam -o  /home/ubuntu/NA10849/NA10849_PCR_sorted.bam
+
+#samtools index to create a bai file
+samtools index -b /home/ubuntu/NA10849/NA10849_PCR_sorted.bam
+
+#Variant calling with bcftools
+samtools mpileup -E -u -v -p -f rCRS.fa /home/ubuntu/NA10849/NA10849_PCR_sorted.bam |  bcftools norm -f rCRS.fa -m +both -d both |    bcftools call -v -m --ploidy 1 |    bcftools norm -f rCRS.fa -m -both |    bcftools norm -d both -O z -f rCRS.fa > /home/ubuntu/NA10849/NA10849_PCR_sorted.vcf.gz
+
+#This is to be edited later to create an automated shell script
+
