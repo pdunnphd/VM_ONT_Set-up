@@ -1,0 +1,32 @@
+#Create a loop script:
+ls *.fastq.gz | sed -e 's/.fastq.gz//g' | sed -e 's/fastq.gz\///g' > fastq_list.txt
+
+#2. mapping fastq file ONT using minimap2 (version 2.17-r941):
+while read x; do
+minimap2 -a /home/ubuntu/rCRS.fa /home/ubuntu/Fastq/{$x}.fastq.gz > /home/ubuntu/SAM/{$x}.sam;
+done < /home/ubuntu/Fastq/fastq_list.txt
+
+#SAM-BAM using samtools
+while read x; do
+samtools view -S -b /home/ubuntu/SAM/{$x}.sam  > /home/ubuntu/BAM/{$x}.bam;  
+done < /home/ubuntu/Fastq/fastq_list.txt
+
+#Samtools sort to sort aligned bam
+while read x; do
+samtools sort /home/ubuntu/BAM/{$x}.bam -o  /home/ubuntu/BAM/{$x}_sorted.bam;
+done < /home/ubuntu/Fastq/fastq_list.txt
+
+#samtools index to create a bai file
+while read x; do
+samtools index -b /home/ubuntu/BAM/{$x}_sorted.bam;
+done < /home/ubuntu/Fastq/fastq_list.txt
+
+#Variant calling with bcftools
+while read x; do
+samtools mpileup -E -u -v -p -f /home/ubuntu/rCRS.fa /home/ubuntu/BAM/{$x}_sorted.bam |  bcftools norm -f rCRS.fa -m +both -d both |    bcftools call -v -m --ploidy 1 |    bcftools norm -f rCRS.fa -m -both |    bcftools norm -d both -O z -f rCRS.fa > /home/ubuntu/VCF/{$x}_sorted.vcf.gz ;
+done < /home/ubuntu/Fastq/fastq_list.txt
+
+#This is to be edited later to create an automated shell script
+
+#3. Run QC check using MinIONQC.R
+Rscript MinIONQC.R -i ./NA10849/sequencing_summary.txt -o ./NA10849/MinIONQC -p 2
